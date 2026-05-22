@@ -21,7 +21,7 @@ final class ExceptionWithNewLineProcessor implements ProcessorInterface
         $message = $record->message;
         $messageHasExceptionPlaceholder = str_contains($message, self::EXCEPTION_PLACEHOLDER);
 
-        if (! $messageHasExceptionPlaceholder) {
+        if (!$messageHasExceptionPlaceholder) {
             return $record;
         }
 

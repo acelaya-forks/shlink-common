@@ -48,7 +48,7 @@ class ConfigurationFactory
         $types = $ormConfig['types'] ?? [];
 
         foreach ($types as $name => $className) {
-            if (! Type::hasType($name)) {
+            if (!Type::hasType($name)) {
                 Type::addType($name, $className);
             }
         }

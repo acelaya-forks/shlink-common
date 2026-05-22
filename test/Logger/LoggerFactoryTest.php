@@ -27,7 +27,7 @@ use Shlinkio\Shlink\Common\Logger\LoggerType;
 
 class LoggerFactoryTest extends TestCase
 {
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -51,9 +51,13 @@ class LoggerFactoryTest extends TestCase
     #[Test, DataProvider('provideConfigWithInvalidType')]
     public function anExceptionIsThrownWhenConfiguredTypeIsInvalid(array $config): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'logger' => ['foo' => $config],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'logger' => ['foo' => $config],
+            ]);
 
         $this->expectException(InvalidLoggerException::class);
         $this->expectExceptionMessage('Expected one of ["file", "stream"]');
@@ -73,9 +77,13 @@ class LoggerFactoryTest extends TestCase
     #[Test, DataProvider('provideTypes')]
     public function expectedHandlerIsCreated(array $config, string $expectedHandler, callable $assertConfig): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'logger' => ['foo' => $config],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'logger' => ['foo' => $config],
+            ]);
 
         /** @var Logger $logger */
         $logger = LoggerFactory::foo($this->container); // @phpstan-ignore-line
@@ -132,11 +140,20 @@ class LoggerFactoryTest extends TestCase
     public function extraProcessorsAreAdded(array $config, int $expectedAmountOfProcessors): void
     {
         $id = static fn (mixed $v) => $v;
-        $this->container->expects($this->exactly($expectedAmountOfProcessors + 1))->method('get')->willReturnCallback(
-            fn (string $serviceName) => $serviceName !== 'config' ? $id : ['logger' => [
-                'foo' => ['type' => LoggerType::STREAM->value, ...$config],
-            ]],
-        );
+        $this->container
+            ->expects($this->exactly($expectedAmountOfProcessors + 1))
+            ->method('get')
+            ->willReturnCallback(
+                static fn (string $serviceName) => (
+                    $serviceName !== 'config'
+                        ? $id
+                        : [
+                            'logger' => [
+                                'foo' => ['type' => LoggerType::STREAM->value, ...$config],
+                            ],
+                        ]
+                ),
+            );
 
         /** @var Logger $logger */
         $logger = LoggerFactory::foo($this->container); // @phpstan-ignore-line
@@ -156,9 +173,14 @@ class LoggerFactoryTest extends TestCase
     #[Test, DataProvider('provideLevelConfig')]
     public function expectedLevelIsSetBasedOnConfig(array $config, Level $expectedLevel): void
     {
-        $this->container->expects($this->once())->method('get')->willReturn(['logger' => [
-            'bar' => ['type' => LoggerType::STREAM->value, ...$config],
-        ]]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn([
+                'logger' => [
+                    'bar' => ['type' => LoggerType::STREAM->value, ...$config],
+                ],
+            ]);
 
         /** @var Logger $logger */
         $logger = LoggerFactory::bar($this->container); // @phpstan-ignore-line
@@ -172,7 +194,7 @@ class LoggerFactoryTest extends TestCase
     public static function provideLevelConfig(): iterable
     {
         yield 'no config' => [[], Level::Info];
-        yield 'invalid level' => [['level' => 30000], Level::Info];
+        yield 'invalid level' => [['level' => 30_000], Level::Info];
         yield 'valid level' => [['level' => Level::Debug->value], Level::Debug];
         yield 'another valid level' => [['level' => Level::Emergency->value], Level::Emergency];
     }
@@ -181,21 +203,31 @@ class LoggerFactoryTest extends TestCase
      * @param class-string<FormatterInterface> $expectedFormatter
      */
     #[Test]
-    #[TestWith([[
-        'formatter' => ['type' => 'json'],
-    ], JsonFormatter::class], 'explicit JSON formatter')]
-    #[TestWith([[
-        'formatter' => ['type' => 'console'],
-    ], LineFormatter::class], 'explicit console formatter')]
+    #[TestWith([
+        [
+            'formatter' => ['type' => 'json'],
+        ],
+        JsonFormatter::class,
+    ], 'explicit JSON formatter')]
+    #[TestWith([
+        [
+            'formatter' => ['type' => 'console'],
+        ],
+        LineFormatter::class,
+    ], 'explicit console formatter')]
     #[TestWith([['formatter' => []], LineFormatter::class], 'default with "formatter" config')]
     #[TestWith([[], LineFormatter::class], 'default without "formatter" config')]
     public function expectedFormatterIsCreated(array $config, string $expectedFormatter): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'logger' => [
-                'foo' => ['type' => LoggerType::STREAM->value, ...$config],
-            ],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'logger' => [
+                    'foo' => ['type' => LoggerType::STREAM->value, ...$config],
+                ],
+            ]);
 
         /** @var Logger $logger */
         $logger = LoggerFactory::foo($this->container); // @phpstan-ignore-line
@@ -207,14 +239,18 @@ class LoggerFactoryTest extends TestCase
     #[Test]
     public function exceptionIsThrownIfInvalidFormatterIsConfigured(): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'logger' => [
-                'foo' => [
-                    'type' => LoggerType::STREAM->value,
-                    'formatter' => ['type' => 'invalid'],
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'logger' => [
+                    'foo' => [
+                        'type' => LoggerType::STREAM->value,
+                        'formatter' => ['type' => 'invalid'],
+                    ],
                 ],
-            ],
-        ]);
+            ]);
 
         $this->expectException(InvalidLoggerException::class);
         $this->expectExceptionMessage(

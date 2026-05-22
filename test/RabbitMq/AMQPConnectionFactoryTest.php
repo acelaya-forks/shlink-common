@@ -14,7 +14,7 @@ use Shlinkio\Shlink\Common\RabbitMq\AMQPConnectionFactory;
 class AMQPConnectionFactoryTest extends TestCase
 {
     private AMQPConnectionFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {

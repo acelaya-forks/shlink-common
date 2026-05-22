@@ -14,9 +14,7 @@ use function Shlinkio\Shlink\Json\json_encode;
 
 readonly class MercureHubPublishingHelper implements PublishingHelperInterface
 {
-    public function __construct(private HubInterface $mercure)
-    {
-    }
+    public function __construct(private HubInterface $mercure) {}
 
     /**
      * @throws Throwable

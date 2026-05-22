@@ -23,7 +23,7 @@ class ChronosDateTimeTypeTest extends TestCase
 
     protected function setUp(): void
     {
-        if (! Type::hasType(ChronosDateTimeType::CHRONOS_DATETIME)) {
+        if (!Type::hasType(ChronosDateTimeType::CHRONOS_DATETIME)) {
             Type::addType(ChronosDateTimeType::CHRONOS_DATETIME, ChronosDateTimeType::class);
         } else {
             Type::overrideType(ChronosDateTimeType::CHRONOS_DATETIME, ChronosDateTimeType::class);

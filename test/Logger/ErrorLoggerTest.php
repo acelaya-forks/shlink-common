@@ -18,7 +18,7 @@ use Shlinkio\Shlink\Common\Logger\ErrorLogger;
 class ErrorLoggerTest extends TestCase
 {
     private ErrorLogger $errorLogger;
-    private MockObject & LoggerInterface $logger;
+    private MockObject&LoggerInterface $logger;
 
     public function setUp(): void
     {
@@ -30,9 +30,12 @@ class ErrorLoggerTest extends TestCase
     public function delegatesIntoInternalLoggerWhenInvoked(int $status, string $expectedLevel): void
     {
         $e = new Exception('Something wrong');
-        $this->logger->expects($this->once())->method('log')->with($expectedLevel, (string) $e);
+        $this->logger
+            ->expects($this->once())
+            ->method('log')
+            ->with($expectedLevel, (string) $e);
 
-        ($this->errorLogger)($e, new ServerRequest(), (new Response())->withStatus($status));
+        ($this->errorLogger)($e, new ServerRequest(), new Response()->withStatus($status));
     }
 
     public static function provideStatusCodes(): iterable

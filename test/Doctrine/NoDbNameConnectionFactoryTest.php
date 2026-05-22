@@ -17,9 +17,9 @@ use Shlinkio\Shlink\Common\Doctrine\NoDbNameConnectionFactory;
 class NoDbNameConnectionFactoryTest extends TestCase
 {
     private NoDbNameConnectionFactory $factory;
-    private MockObject & Connection $originalConn;
-    private MockObject & ContainerInterface $container;
-    private MockObject & EntityManager $em;
+    private MockObject&Connection $originalConn;
+    private MockObject&ContainerInterface $container;
+    private MockObject&EntityManager $em;
 
     protected function setUp(): void
     {
@@ -46,9 +46,12 @@ class NoDbNameConnectionFactoryTest extends TestCase
 
         $conn = ($this->factory)($this->container);
 
-        self::assertEquals([
-            'username' => 'foo',
-            'password' => 'bar',
-        ], $conn->getParams());
+        self::assertEquals(
+            [
+                'username' => 'foo',
+                'password' => 'bar',
+            ],
+            $conn->getParams(),
+        );
     }
 }

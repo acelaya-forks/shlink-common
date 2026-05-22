@@ -19,7 +19,7 @@ trait ResponseUtilsTrait
     {
         $body = new Stream($path);
         return new Response($body, StatusCode::STATUS_OK, ArrayUtils::merge([
-            'Content-Type' => (new finfo(FILEINFO_MIME))->file($path),
+            'Content-Type' => new finfo(FILEINFO_MIME)->file($path),
             'Content-Length' => (string) $body->getSize(),
         ], $extraHeaders));
     }

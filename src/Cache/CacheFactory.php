@@ -29,7 +29,7 @@ class CacheFactory
         $redisConfig = $config['cache']['redis'] ?? null;
         $lifetime = (int) ($config['cache']['default_lifetime'] ?? 0);
 
-        if ($isDebug || (! $apcuEnabled && $redisConfig === null)) {
+        if ($isDebug || (!$apcuEnabled && $redisConfig === null)) {
             return new Adapter\ArrayAdapter($lifetime);
         }
 

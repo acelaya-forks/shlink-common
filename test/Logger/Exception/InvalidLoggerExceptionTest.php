@@ -23,17 +23,17 @@ class InvalidLoggerExceptionTest extends TestCase
         yield [
             'foo',
             'Provided logger with name "foo" is not valid. Make sure to provide a value defined under the "logger" '
-            . 'config key.',
+                . 'config key.',
         ];
         yield [
             'bar',
             'Provided logger with name "bar" is not valid. Make sure to provide a value defined under the "logger" '
-            . 'config key.',
+                . 'config key.',
         ];
         yield [
             'my_logger',
             'Provided logger with name "my_logger" is not valid. Make sure to provide a value defined under the '
-            . '"logger" config key.',
+                . '"logger" config key.',
         ];
     }
 

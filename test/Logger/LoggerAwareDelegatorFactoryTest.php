@@ -18,7 +18,7 @@ use stdClass;
 class LoggerAwareDelegatorFactoryTest extends TestCase
 {
     private LoggerAwareDelegatorFactory $delegator;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -33,13 +33,21 @@ class LoggerAwareDelegatorFactoryTest extends TestCase
         int $expectedHasLoggerCalls,
         int $expectedGetLoggerCalls,
     ): void {
-        $callback = fn () => $instance;
-        $this->container->expects($this->exactly($expectedHasLoggerCalls))->method('has')->with(
-            Log\LoggerInterface::class,
-        )->willReturn($hasLogger);
-        $this->container->expects($this->exactly($expectedGetLoggerCalls))->method('get')->with(
-            Log\LoggerInterface::class,
-        )->willReturn(new Log\NullLogger());
+        $callback = static fn () => $instance;
+        $this->container
+            ->expects($this->exactly($expectedHasLoggerCalls))
+            ->method('has')
+            ->with(
+                Log\LoggerInterface::class,
+            )
+            ->willReturn($hasLogger);
+        $this->container
+            ->expects($this->exactly($expectedGetLoggerCalls))
+            ->method('get')
+            ->with(
+                Log\LoggerInterface::class,
+            )
+            ->willReturn(new Log\NullLogger());
 
         $result = ($this->delegator)($this->container, '', $callback);
 

@@ -7,7 +7,6 @@ namespace Shlinkio\Shlink\Common;
 use GuzzleHttp;
 
 return [
-
     'http_client' => [
         'request_middlewares' => [],
         'response_middlewares' => [],
@@ -21,5 +20,4 @@ return [
             'httpClient' => GuzzleHttp\Client::class,
         ],
     ],
-
 ];

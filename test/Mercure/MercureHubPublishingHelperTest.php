@@ -15,7 +15,7 @@ use Symfony\Component\Mercure\Update as MercureUpdate;
 class MercureHubPublishingHelperTest extends TestCase
 {
     private MercureHubPublishingHelper $helper;
-    private MockObject & HubInterface $hub;
+    private MockObject&HubInterface $hub;
 
     public function setUp(): void
     {
@@ -26,9 +26,13 @@ class MercureHubPublishingHelperTest extends TestCase
     #[Test]
     public function updatesAreForwardedToMercure(): void
     {
-        $this->hub->expects($this->once())->method('publish')->with(
-            new MercureUpdate('foo', '{"bar":"baz"}'),
-        )->willReturn('');
+        $this->hub
+            ->expects($this->once())
+            ->method('publish')
+            ->with(
+                new MercureUpdate('foo', '{"bar":"baz"}'),
+            )
+            ->willReturn('');
         $this->helper->publishUpdate(Update::forTopicAndPayload('foo', ['bar' => 'baz']));
     }
 }

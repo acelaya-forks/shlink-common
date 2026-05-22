@@ -34,7 +34,7 @@ class Paginator extends Pagerfanta
 
     public function getMaxPerPage(): int
     {
-        if (! $this->returnAllItems) {
+        if (!$this->returnAllItems) {
             return parent::getMaxPerPage();
         }
 

@@ -17,16 +17,18 @@ use stdClass;
 
 class EnhancedPHPDriverTest extends TestCase
 {
-    private Stub & FileLocator $loader;
+    private Stub&FileLocator $loader;
     /** @var MockObject & ClassMetadata<stdClass> */
-    private MockObject & ClassMetadata $meta;
+    private MockObject&ClassMetadata $meta;
 
     public function setUp(): void
     {
         $this->loader = $this->createStub(FileLocator::class);
-        $this->loader->method('findMappingFile')->willReturn(
-            __DIR__ . '/../../../test-resources/mapping/fake.mapping.php',
-        );
+        $this->loader
+            ->method('findMappingFile')
+            ->willReturn(
+                __DIR__ . '/../../../test-resources/mapping/fake.mapping.php',
+            );
         $this->meta = $this->createMock(ClassMetadata::class);
     }
 

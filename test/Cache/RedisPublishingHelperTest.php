@@ -14,7 +14,7 @@ use Shlinkio\Shlink\Common\UpdatePublishing\Update;
 class RedisPublishingHelperTest extends TestCase
 {
     private RedisPublishingHelper $helper;
-    private MockObject & ClientInterface $predis;
+    private MockObject&ClientInterface $predis;
 
     public function setUp(): void
     {

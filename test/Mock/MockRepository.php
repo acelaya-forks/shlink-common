@@ -9,6 +9,4 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<object>
  */
-class MockRepository extends EntityRepository
-{
-}
+class MockRepository extends EntityRepository {}

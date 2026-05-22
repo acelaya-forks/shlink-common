@@ -9,7 +9,6 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 
 return [
-
     'entity_manager' => [
         'orm' => [
             'types' => [
@@ -34,5 +33,4 @@ return [
             ],
         ],
     ],
-
 ];

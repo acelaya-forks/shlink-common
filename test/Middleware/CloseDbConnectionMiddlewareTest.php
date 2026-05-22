@@ -18,9 +18,9 @@ use Shlinkio\Shlink\Common\Middleware\CloseDbConnectionMiddleware;
 class CloseDbConnectionMiddlewareTest extends TestCase
 {
     private CloseDbConnectionMiddleware $middleware;
-    private MockObject & RequestHandlerInterface $handler;
-    private MockObject & ReopeningEntityManagerInterface $em;
-    private MockObject & Connection $conn;
+    private MockObject&RequestHandlerInterface $handler;
+    private MockObject&ReopeningEntityManagerInterface $em;
+    private MockObject&Connection $conn;
 
     public function setUp(): void
     {

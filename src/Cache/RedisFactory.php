@@ -41,7 +41,7 @@ class RedisFactory
         $servers = $redisConfig['servers'] ?? [];
 
         $servers = array_map(
-            fn (string $server) => $this->normalizeServer($server),
+            $this->normalizeServer(...),
             is_string($servers) ? explode(',', $servers) : $servers,
         );
 
@@ -52,7 +52,7 @@ class RedisFactory
     private function normalizeServer(string $server): array
     {
         $parsedServer = parse_url(trim($server));
-        if (! is_array($parsedServer)) {
+        if (!is_array($parsedServer)) {
             throw new InvalidArgumentException(sprintf(
                 'Provided server "%s" is not a valid URL with format %s',
                 $server,
@@ -122,7 +122,7 @@ class RedisFactory
     {
         $sentinelService = $redisConfig['sentinel_service'] ?? null;
         if ($sentinelService === null) {
-            return ! isset($servers[0]) ? null : ['cluster' => 'redis'];
+            return !isset($servers[0]) ? null : ['cluster' => 'redis'];
         }
 
         $password = $redisConfig['password'] ?? null;

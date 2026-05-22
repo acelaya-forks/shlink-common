@@ -8,9 +8,7 @@ use Cake\Chronos\Chronos;
 
 final readonly class DateRange
 {
-    private function __construct(public Chronos|null $startDate = null, public Chronos|null $endDate = null)
-    {
-    }
+    private function __construct(public Chronos|null $startDate = null, public Chronos|null $endDate = null) {}
 
     public static function since(Chronos $startDate): self
     {

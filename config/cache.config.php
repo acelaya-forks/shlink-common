@@ -12,7 +12,6 @@ use Psr\SimpleCache\CacheInterface as PsrSimpleCache;
 use Symfony\Component\Cache\Psr16Cache;
 
 return [
-
     'dependencies' => [
         'factories' => [
             PsrCache::class => Cache\CacheFactory::class,
@@ -31,5 +30,4 @@ return [
         Cache\RedisPublishingHelper::class => [Cache\RedisFactory::SERVICE_NAME],
         Psr16Cache::class => [PsrCache::class],
     ],
-
 ];

@@ -55,7 +55,7 @@ class PagerfantaUtilsTest extends TestCase
                     'totalItems' => 3,
                 ],
             ],
-            (new Pagerfanta(new ArrayAdapter(range(1, 3))))->setMaxPerPage(2),
+            new Pagerfanta(new ArrayAdapter(range(1, 3)))->setMaxPerPage(2),
         ];
 
         yield 'not in first page' => [
@@ -69,7 +69,9 @@ class PagerfantaUtilsTest extends TestCase
                     'totalItems' => 15,
                 ],
             ],
-            (new Pagerfanta(new ArrayAdapter(range(1, 15))))->setMaxPerPage(3)->setCurrentPage(3),
+            new Pagerfanta(new ArrayAdapter(range(1, 15)))
+                ->setMaxPerPage(3)
+                ->setCurrentPage(3),
         ];
 
         yield 'last incomplete page' => [
@@ -83,7 +85,9 @@ class PagerfantaUtilsTest extends TestCase
                     'totalItems' => 13,
                 ],
             ],
-            (new Pagerfanta(new ArrayAdapter(range(1, 13))))->setMaxPerPage(3)->setCurrentPage(5),
+            new Pagerfanta(new ArrayAdapter(range(1, 13)))
+                ->setMaxPerPage(3)
+                ->setCurrentPage(5),
         ];
     }
 
@@ -131,7 +135,9 @@ class PagerfantaUtilsTest extends TestCase
         yield [
             'Page "5" out of "10"',
             'Page "%s" out of "%s"',
-            (new Pagerfanta(new ArrayAdapter(range(1, 20))))->setMaxPerPage(2)->setCurrentPage(5),
+            new Pagerfanta(new ArrayAdapter(range(1, 20)))
+                ->setMaxPerPage(2)
+                ->setCurrentPage(5),
         ];
         yield [
             'Current: 1. Total: 1',

@@ -13,8 +13,8 @@ use function base64_decode;
 
 class PixelResponse extends Response
 {
-    private const BASE_64_IMAGE = 'R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==';
-    private const CONTENT_TYPE = 'image/gif';
+    private const string BASE_64_IMAGE = 'R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==';
+    private const string CONTENT_TYPE = 'image/gif';
 
     public function __construct(int $status = StatusCode::STATUS_OK, array $headers = [])
     {
@@ -25,7 +25,8 @@ class PixelResponse extends Response
     private function createBody(): StreamInterface
     {
         $body = new Stream('php://temp', 'wb+');
-        $body->write(base64_decode(self::BASE_64_IMAGE));
+        // @phpstan-ignore argument.type
+        $body->write(base64_decode(self::BASE_64_IMAGE, strict: true));
         $body->rewind();
         return $body;
     }

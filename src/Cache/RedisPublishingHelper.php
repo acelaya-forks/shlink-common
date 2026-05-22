@@ -13,9 +13,7 @@ use function Shlinkio\Shlink\Json\json_encode;
 
 readonly class RedisPublishingHelper implements PublishingHelperInterface
 {
-    public function __construct(private PredisClient $predis)
-    {
-    }
+    public function __construct(private PredisClient $predis) {}
 
     /**
      * @throws Throwable

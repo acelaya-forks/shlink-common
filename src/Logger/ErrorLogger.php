@@ -11,9 +11,7 @@ use Throwable;
 
 class ErrorLogger
 {
-    public function __construct(private Log\LoggerInterface $logger)
-    {
-    }
+    public function __construct(private Log\LoggerInterface $logger) {}
 
     public function __invoke(Throwable $error, ServerRequestInterface $request, ResponseInterface $response): void
     {

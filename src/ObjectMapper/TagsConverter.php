@@ -34,7 +34,11 @@ class TagsConverter
     {
         // @phpstan-ignore return.type
         return array_unique(
-            array_map(fn (string $tag) => preg_replace('/ /', '-', mb_strtolower(trim(strip_tags($tag)))), $value),
+            array_map(static fn (string $tag) => preg_replace(
+                '/ /',
+                '-',
+                mb_strtolower(trim(strip_tags($tag))),
+            ), $value),
         );
     }
 }

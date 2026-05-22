@@ -11,6 +11,5 @@ readonly class MockModel
     public function __construct(
         public string|null $foo = null,
         public Chronos|null $bar = null,
-    ) {
-    }
+    ) {}
 }

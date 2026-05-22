@@ -27,11 +27,11 @@ final class HostAndPortConverter
         }
 
         [$host, $port] = array_pad($parts, length: 2, value: null);
-        if (! $this->hostIsValid($host)) {
+        if (!$this->hostIsValid($host)) {
             throw new MappingError('The host part of the value is not valid. It must be a hostname or IP address');
         }
 
-        if (! $this->portIsValid($port)) {
+        if (!$this->portIsValid($port)) {
             throw new MappingError('The port part of the value is not valid. It must be a number between 1 and 65535');
         }
 
@@ -54,6 +54,6 @@ final class HostAndPortConverter
         }
 
         $portAsNumber = (int) $port;
-        return ($port === (string) $portAsNumber) && $portAsNumber > 0 && $portAsNumber <= 65_535;
+        return $port === (string) $portAsNumber && $portAsNumber > 0 && $portAsNumber <= 65_535;
     }
 }

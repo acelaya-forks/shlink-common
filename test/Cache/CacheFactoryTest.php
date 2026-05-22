@@ -17,7 +17,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class CacheFactoryTest extends TestCase
 {
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -38,12 +38,13 @@ class CacheFactoryTest extends TestCase
         $predis = $this->createStub(PredisClient::class);
         $predis->method('getOptions')->willReturn(new Options(['exceptions' => false]));
 
-        $this->container->expects($this->exactly($expectedAdapterClass === Adapter\RedisAdapter::class ? 2 : 1))
-                        ->method('get')
-                        ->willReturnMap([
-                            ['config', $config],
-                            [PredisClient::class, $predis],
-                        ]);
+        $this->container
+            ->expects($this->exactly($expectedAdapterClass === Adapter\RedisAdapter::class ? 2 : 1))
+            ->method('get')
+            ->willReturnMap([
+                ['config',            $config],
+                [PredisClient::class, $predis],
+            ]);
 
         $cache = $factory($this->container);
 
@@ -61,9 +62,15 @@ class CacheFactoryTest extends TestCase
         yield 'debug false and apcu disabled' => [['debug' => false], Adapter\ArrayAdapter::class, $withoutApcu];
         yield 'no debug and apcu enabled' => [[], Adapter\ApcuAdapter::class, $withApcu];
         yield 'no debug and apcu disabled' => [[], Adapter\ArrayAdapter::class, $withoutApcu];
-        yield 'redis configured' => [['cache' => [
-            'namespace' => 'some_namespace',
-            'redis' => [],
-        ]], Adapter\RedisAdapter::class, $withApcu];
+        yield 'redis configured' => [
+            [
+                'cache' => [
+                    'namespace' => 'some_namespace',
+                    'redis' => [],
+                ],
+            ],
+            Adapter\RedisAdapter::class,
+            $withApcu,
+        ];
     }
 }

@@ -22,7 +22,7 @@ class ReopeningEntityManager extends EntityManagerDecorator implements Reopening
 
     public function open(): void
     {
-        if (! $this->wrapped->isOpen()) {
+        if (!$this->wrapped->isOpen()) {
             $this->wrapped = ($this->createEm)();
         }
     }
