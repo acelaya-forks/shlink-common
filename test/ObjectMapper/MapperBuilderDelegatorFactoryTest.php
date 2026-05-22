@@ -19,10 +19,10 @@ class MapperBuilderDelegatorFactoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->mapper = new MapperBuilderDelegatorFactory()(
+        $this->mapper = (new MapperBuilderDelegatorFactory())(
             container: $this->createStub(ContainerInterface::class),
             name: '',
-            callback: fn () => new MapperBuilder(),
+            callback: static fn () => new MapperBuilder(),
         )->mapper();
     }
 

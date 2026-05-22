@@ -34,7 +34,7 @@ class HostAndPortConverterTest extends TestCase
         $this->expectException(MappingError::class);
         $this->expectExceptionMessage($expectedError);
 
-        $this->converter->map($value, fn () => '');
+        $this->converter->map($value, static fn () => '');
     }
 
     #[Test]
@@ -50,7 +50,7 @@ class HostAndPortConverterTest extends TestCase
     public function passesValidValuesToNextVerbatim(string $value): void
     {
         $calledArg = null;
-        $next = function (mixed $arg) use (&$calledArg) {
+        $next = static function (mixed $arg) use (&$calledArg) {
             $calledArg = $arg;
             return $arg;
         };

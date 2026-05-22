@@ -10,7 +10,6 @@ use PhpAmqpLib\Connection\AMQPConnectionConfig;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 return [
-
     'rabbitmq' => [
         'use_ssl' => false,
     ],
@@ -36,5 +35,4 @@ return [
     ConfigAbstractFactory::class => [
         RabbitMq\RabbitMqPublishingHelper::class => [AMQPStreamConnection::class],
     ],
-
 ];

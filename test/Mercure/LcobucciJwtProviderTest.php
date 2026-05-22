@@ -59,9 +59,11 @@ class LcobucciJwtProviderTest extends TestCase
     public function expectedPublishTokenIsCreated(MercureOptions $mercureOptions, string $expectedIssuer): void
     {
         /** @var UnencryptedToken $token */
-        $token = $this->jwtConfig->parser()->parse(
-            (new LcobucciJwtProvider($this->jwtConfig, $mercureOptions))->getJwt(),
-        );
+        $token = $this->jwtConfig
+            ->parser()
+            ->parse(
+                new LcobucciJwtProvider($this->jwtConfig, $mercureOptions)->getJwt(),
+            );
 
         self::assertTrue($token->hasBeenIssuedBy($expectedIssuer));
         self::assertTrue($token->isExpired(Chronos::now()->addMinutes(10)->addSeconds(5)));
@@ -78,9 +80,11 @@ class LcobucciJwtProviderTest extends TestCase
     public function expectedSubscriptionTokenIsCreated(Chronos|null $expiresAt, Chronos $expectedExpiresAt): void
     {
         /** @var UnencryptedToken $token */
-        $token = $this->jwtConfig->parser()->parse(
-            (new LcobucciJwtProvider($this->jwtConfig, new MercureOptions()))->buildSubscriptionToken($expiresAt),
-        );
+        $token = $this->jwtConfig
+            ->parser()
+            ->parse(
+                new LcobucciJwtProvider($this->jwtConfig, new MercureOptions())->buildSubscriptionToken($expiresAt),
+            );
 
         self::assertTrue($token->isExpired($expectedExpiresAt->addSeconds(5)));
         self::assertEquals(['subscribe' => ['*']], $token->claims()->get('mercure'));

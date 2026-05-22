@@ -15,8 +15,8 @@ use Shlinkio\Shlink\Common\Logger\ErrorHandlerListenerAttachingDelegator;
 class ErrorHandlerListenerAttachingDelegatorTest extends TestCase
 {
     private ErrorHandlerListenerAttachingDelegator $delegator;
-    private MockObject & ContainerInterface $container;
-    private MockObject & ErrorHandler $errorHandler;
+    private MockObject&ContainerInterface $container;
+    private MockObject&ErrorHandler $errorHandler;
 
     public function setUp(): void
     {
@@ -28,16 +28,18 @@ class ErrorHandlerListenerAttachingDelegatorTest extends TestCase
     #[Test, DataProvider('provideConfig')]
     public function attachesAllRegisteredListeners(int $expectedCalls, array $config): void
     {
-        $listener = function (): void {
-        };
-        $this->container->expects($this->exactly($expectedCalls + 1))->method('get')->willReturnCallback(
-            fn (string $serviceName) => $serviceName === 'config' ? $config : $listener,
-        );
+        $listener = static function (): void {};
+        $this->container
+            ->expects($this->exactly($expectedCalls + 1))
+            ->method('get')
+            ->willReturnCallback(
+                static fn (string $serviceName) => $serviceName === 'config' ? $config : $listener,
+            );
         $this->errorHandler->expects($this->exactly($expectedCalls))->method('attachListener')->with($listener);
         $callbackInvoked = false;
 
         $expected = $this->errorHandler;
-        $result = ($this->delegator)($this->container, '', function () use (&$callbackInvoked, $expected) {
+        $result = ($this->delegator)($this->container, '', static function () use (&$callbackInvoked, $expected) {
             $callbackInvoked = true;
             return $expected;
         });
@@ -51,10 +53,15 @@ class ErrorHandlerListenerAttachingDelegatorTest extends TestCase
         yield [0, []];
         yield [0, ['error_handler' => []]];
         yield [0, ['error_handler' => ['listeners' => []]]];
-        yield [3, ['error_handler' => ['listeners' => [
-            'foo',
-            'bar',
-            'baz',
-        ]]]];
+        yield [
+            3,
+            [
+                'error_handler' => ['listeners' => [
+                    'foo',
+                    'bar',
+                    'baz',
+                ]],
+            ],
+        ];
     }
 }

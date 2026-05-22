@@ -36,7 +36,7 @@ class ConfigurationFactoryTest extends TestCase
             $instancesProp = $ref->getProperty('instances');
             $withoutChronosType = array_filter(
                 $typeRegistry->getMap(),
-                fn (string $key): bool => $key !== ChronosDateTimeType::CHRONOS_DATETIME,
+                static fn (string $key): bool => $key !== ChronosDateTimeType::CHRONOS_DATETIME,
                 ARRAY_FILTER_USE_KEY,
             );
             $instancesProp->setValue($typeRegistry, $withoutChronosType);

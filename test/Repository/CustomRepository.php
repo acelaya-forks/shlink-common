@@ -9,6 +9,4 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<object>
  */
-class CustomRepository extends EntityRepository
-{
-}
+class CustomRepository extends EntityRepository {}

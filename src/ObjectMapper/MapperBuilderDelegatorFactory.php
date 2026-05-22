@@ -20,15 +20,13 @@ class MapperBuilderDelegatorFactory
         /** @var MapperBuilder $mapperBuilder */
         $mapperBuilder = $callback();
         return $mapperBuilder
-
             // Format dates
             ->supportDateFormats(DateTimeInterface::ATOM, 'Y-m-d')
-            ->infer(DateTimeInterface::class, fn () => Chronos::class)
-            ->registerConstructor(fn (string $date): Chronos => normalizeDate($date))
-
+            ->infer(DateTimeInterface::class, static fn () => Chronos::class)
+            ->registerConstructor(static fn (string $date): Chronos => normalizeDate($date))
             // Trim and strip tags on strings
             ->registerConverter(
-                fn (string $value, callable $next): string => $next(trim(strip_tags($value))),
+                static fn (string $value, callable $next): string => $next(trim(strip_tags($value))),
                 priority: -9999, // This should always be called first
             );
     }

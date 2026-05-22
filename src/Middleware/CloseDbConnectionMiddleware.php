@@ -12,9 +12,7 @@ use Shlinkio\Shlink\Common\Doctrine\ReopeningEntityManagerInterface;
 
 class CloseDbConnectionMiddleware implements MiddlewareInterface
 {
-    public function __construct(private ReopeningEntityManagerInterface $em)
-    {
-    }
+    public function __construct(private ReopeningEntityManagerInterface $em) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

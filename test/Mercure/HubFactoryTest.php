@@ -19,7 +19,7 @@ use Symfony\Component\Mercure\Jwt\TokenProviderInterface;
 class HubFactoryTest extends TestCase
 {
     private HubFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -49,10 +49,13 @@ class HubFactoryTest extends TestCase
     #[Test, DataProvider('provideValidConfigs')]
     public function returnsExpectedObjectIfProperConfigIsFound(MercureOptions $options, string $expectedHubUrl): void
     {
-        $this->container->expects($this->exactly(2))->method('get')->willReturnMap([
-            [MercureOptions::class, $options],
-            [LcobucciJwtProvider::class, $this->createStub(TokenProviderInterface::class)],
-        ]);
+        $this->container
+            ->expects($this->exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                [MercureOptions::class, $options],
+                [LcobucciJwtProvider::class, $this->createStub(TokenProviderInterface::class)],
+            ]);
 
         $hub = ($this->factory)($this->container);
 

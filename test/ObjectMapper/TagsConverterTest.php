@@ -22,9 +22,15 @@ class TagsConverterTest extends TestCase
     #[TestWith([['foo', 'bar', 'baz'], ['foo', 'bar', 'baz']])]
     #[TestWith([['foo', 'bar', 'baz', 'foo', 'baz'], ['foo', 'bar', 'baz']])]
     #[TestWith([['foo', 'bar', 'baz', 'FOO', ' bar'], ['foo', 'bar', 'baz']])]
-    #[TestWith([['fo o', '  bar', 'b az'], ['fo-o', 'bar', 'b-az']])]
+    #[TestWith([
+        ['fo o', '  bar', 'b az'],
+        ['fo-o', 'bar',   'b-az'],
+    ])]
     #[TestWith([['UUU', 'Aäa'], ['uuu', 'aäa']])]
-    #[TestWith([['<script></script> the tag'], ['the-tag']])]
+    #[TestWith([
+        ['<script></script> the tag'],
+        ['the-tag'],
+    ])]
     public function mapsTagsAsExpected(array $tags, array $expected): void
     {
         self::assertEquals($expected, $this->converter->map($tags));

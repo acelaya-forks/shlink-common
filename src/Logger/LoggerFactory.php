@@ -52,7 +52,7 @@ class LoggerFactory
         $destination = $loggerConfig['destination'] ?? null;
         $level = Level::tryFrom($loggerConfig['level'] ?? Level::Info->value) ?? Level::Info;
         $handler = $type === LoggerType::FILE
-            ? new RotatingFileHandler($destination ?? 'data/log/shlink_log.log', 30, $level, true, 0666)
+            ? new RotatingFileHandler($destination ?? 'data/log/shlink_log.log', 30, $level, true, 0o666)
             : new StreamHandler($destination ?? 'php://stdout', $level);
 
         $handler->setFormatter(self::buildFormatter($loggerConfig));
@@ -63,7 +63,7 @@ class LoggerFactory
     private static function buildFormatter(array $loggerConfig): FormatterInterface
     {
         $formatterType = $loggerConfig['formatter']['type'] ?? 'console';
-        if (! in_array($formatterType, ['console', 'json'], strict: true)) {
+        if (!in_array($formatterType, ['console', 'json'], strict: true)) {
             throw InvalidLoggerException::fromInvalidFormatterType((string) $formatterType);
         }
 
@@ -76,7 +76,7 @@ class LoggerFactory
 
         $lineFormat = $formatterConfig['line_format'] ?? '';
         if ($addNewLine) {
-            $lineFormat = $lineFormat . PHP_EOL;
+            $lineFormat .= PHP_EOL;
         }
 
         return new LineFormatter($lineFormat, allowInlineLineBreaks: true);
@@ -88,7 +88,7 @@ class LoggerFactory
         return [
             new Processor\ExceptionWithNewLineProcessor(),
             new PsrLogMessageProcessor(),
-            ...array_map(static fn (string $value) => $container->get($value), $extraProcessors),
+            ...array_map($container->get(...), $extraProcessors),
         ];
     }
 }

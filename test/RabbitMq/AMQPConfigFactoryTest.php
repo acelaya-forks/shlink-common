@@ -14,7 +14,7 @@ use Shlinkio\Shlink\Common\RabbitMq\AMQPConfigFactory;
 class AMQPConfigFactoryTest extends TestCase
 {
     private AMQPConfigFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     protected function setUp(): void
     {
@@ -25,16 +25,20 @@ class AMQPConfigFactoryTest extends TestCase
     #[Test, DataProvider('provideSsl')]
     public function properConnectionObjectIsCreated(array $useSsl): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'rabbitmq' => [
-                ...$useSsl,
-                'host' => 'host',
-                'port' => 1111,
-                'user' => 'user',
-                'password' => 'password',
-                'vhost' => 'vhost',
-            ],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'rabbitmq' => [
+                    ...$useSsl,
+                    'host' => 'host',
+                    'port' => 1111,
+                    'user' => 'user',
+                    'password' => 'password',
+                    'vhost' => 'vhost',
+                ],
+            ]);
 
         $config = ($this->factory)($this->container);
 

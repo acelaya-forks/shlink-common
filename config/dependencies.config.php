@@ -10,7 +10,6 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 use Psr\Log\LoggerInterface;
 
 return [
-
     'dependencies' => [
         'factories' => [
             Middleware\RequestIdMiddleware::class => InvokableFactory::class,
@@ -33,5 +32,4 @@ return [
         Middleware\AccessLogMiddleware::class => [Middleware\AccessLogMiddleware::LOGGER_SERVICE_NAME],
         Logger\ErrorLogger::class => [LoggerInterface::class],
     ],
-
 ];

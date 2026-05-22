@@ -37,6 +37,7 @@
     },
     "require-dev": {
         "akrabat/ip-address-middleware": "^2.6",
+        "carthage-software/mago": "^1.28",
         "devster/ubench": "^2.1",
         "laminas/laminas-stratigility": "^4.3",
         "mezzio/mezzio-problem-details": "^1.19",
@@ -45,8 +46,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^13.0",
         "psr/simple-cache": "^3.0",
-        "roave/security-advisories": "dev-master",
-        "shlinkio/php-coding-standard": "~2.5.0",
+        "shlinkio/shlink-mago-config": "^1.0",
         "symfony/string": "^8.0",
         "symfony/var-dumper": "^8.0"
     },
@@ -74,8 +74,12 @@
             "@stan",
             "@test:ci"
         ],
-        "cs": "phpcs",
-        "cs:fix": "phpcbf",
+        "lint": "mago lint",
+        "lint:fix": "mago lint --fix",
+        "format": "mago format",
+        "format:check": "mago format --check",
+        "cs": ["@lint", "@format:check"],
+        "cs:fix": ["@lint:fix", "@format"],
         "stan": "phpstan analyse",
         "test": "phpunit --order-by=random --testdox --testdox-summary",
         "test:ci": "XDEBUG_MODE=coverage composer test -- --coverage-clover=build/clover.xml",

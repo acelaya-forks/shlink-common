@@ -17,9 +17,10 @@ class AccessLogMiddleware implements MiddlewareInterface
 {
     public const LOGGER_SERVICE_NAME = self::class . '/Logger';
 
-    public function __construct(private readonly LoggerInterface $logger, private readonly array $ignoredPrefixes = [])
-    {
-    }
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly array $ignoredPrefixes = [],
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

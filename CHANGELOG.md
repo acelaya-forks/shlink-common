@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 
 ### Changed
 * `TagsConverter` now removes duplicate entries.
+* Migrate form PHP_CodeSniffer to Mago for code linting and formatting.
 
 ### Deprecated
 * *Nothing*

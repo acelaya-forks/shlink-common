@@ -23,15 +23,18 @@ use function sprintf;
 
 class EntityRepositoryFactoryTest extends TestCase
 {
-    private MockObject & ContainerInterface $container;
-    private MockObject & EntityManagerInterface $em;
+    private MockObject&ContainerInterface $container;
+    private MockObject&EntityManagerInterface $em;
 
     public function setUp(): void
     {
         $configuration = $this->createMock(Configuration::class);
-        $configuration->expects($this->once())->method('getDefaultRepositoryClassName')->willReturn(
-            MockRepository::class,
-        );
+        $configuration
+            ->expects($this->once())
+            ->method('getDefaultRepositoryClassName')
+            ->willReturn(
+                MockRepository::class,
+            );
 
         $this->em = $this->createMock(EntityManagerInterface::class);
         $this->em->expects($this->once())->method('getConfiguration')->willReturn($configuration);
@@ -46,9 +49,13 @@ class EntityRepositoryFactoryTest extends TestCase
     #[Test, DataProvider('provideValidRepoNames')]
     public function createsRequestedRepositoryClass(string $repoClass): void
     {
-        $this->em->expects($this->once())->method('getClassMetadata')->with(stdClass::class)->willReturn(
-            new ClassMetadata(stdClass::class),
-        );
+        $this->em
+            ->expects($this->once())
+            ->method('getClassMetadata')
+            ->with(stdClass::class)
+            ->willReturn(
+                new ClassMetadata(stdClass::class),
+            );
 
         // @phpstan-ignore staticMethod.notFound
         $repoInstance = EntityRepositoryFactory::{stdClass::class}($this->container, $repoClass);

@@ -19,7 +19,7 @@ class PaginatorTest extends TestCase
     /** @var Paginator<T> */
     private Paginator $paginator;
     /** @var MockObject & AdapterInterface<T> */
-    private MockObject & AdapterInterface $adapter;
+    private MockObject&AdapterInterface $adapter;
 
     protected function setUp(): void
     {

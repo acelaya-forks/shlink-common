@@ -16,7 +16,7 @@ use Shlinkio\Shlink\Common\Middleware\ContentLengthMiddleware;
 class ContentLengthMiddlewareTest extends TestCase
 {
     private ContentLengthMiddleware $middleware;
-    private MockObject & RequestHandlerInterface $handler;
+    private MockObject&RequestHandlerInterface $handler;
 
     public function setUp(): void
     {

@@ -13,8 +13,7 @@ class LcobucciJwtProvider implements JwtProviderInterface
     public function __construct(
         private readonly Configuration $jwtConfig,
         private readonly MercureOptions $mercureOptions,
-    ) {
-    }
+    ) {}
 
     /**
      * @return non-empty-string

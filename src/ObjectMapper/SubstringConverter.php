@@ -17,9 +17,7 @@ final readonly class SubstringConverter
     /**
      * @param positive-int $length
      */
-    public function __construct(private int $length)
-    {
-    }
+    public function __construct(private int $length) {}
 
     public function map(string $value): string
     {

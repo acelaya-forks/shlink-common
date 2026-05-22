@@ -17,7 +17,7 @@ use Shlinkio\Shlink\Common\Mercure\MercureOptions;
 class JwtConfigFactoryTest extends TestCase
 {
     private JwtConfigFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -49,9 +49,13 @@ class JwtConfigFactoryTest extends TestCase
     {
         $secret = 'the _super_secure_secret';
 
-        $this->container->expects($this->once())->method('get')->with(MercureOptions::class)->willReturn(
-            new MercureOptions(jwtSecret: $secret),
-        );
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with(MercureOptions::class)
+            ->willReturn(
+                new MercureOptions(jwtSecret: $secret),
+            );
 
         $jwtConfig = ($this->factory)($this->container);
 

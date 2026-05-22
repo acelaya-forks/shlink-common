@@ -18,7 +18,7 @@ use Shlinkio\Shlink\Common\Middleware\RequestIdMiddleware;
 class RequestIdMiddlewareTest extends TestCase
 {
     private RequestIdMiddleware $middleware;
-    private Stub & RequestHandlerInterface $handler;
+    private Stub&RequestHandlerInterface $handler;
 
     public function setUp(): void
     {

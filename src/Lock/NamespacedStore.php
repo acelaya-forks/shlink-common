@@ -21,8 +21,7 @@ class NamespacedStore implements SharedLockStoreInterface
         private readonly string|null $namespace = null,
         /** Some stores may not allow default separator value. Make sure you provide the appropriate one */
         private readonly string $namespaceSeparator = ':',
-    ) {
-    }
+    ) {}
 
     public function save(Key $key): void
     {
@@ -69,9 +68,13 @@ class NamespacedStore implements SharedLockStoreInterface
         //
         // Using Closure::bind we can run a closure using provided key as $this context, and therefore, allowing private
         // props to be accessed
-        return Closure::bind(function (Key $mutableKey) use ($prefix, $unprefixedResource) {
-            $mutableKey->resource = sprintf('%s%s', $prefix, $unprefixedResource);
-            return $mutableKey;
-        }, null, $key)($key);
+        return Closure::bind(
+            static function (Key $mutableKey) use ($prefix, $unprefixedResource) {
+                $mutableKey->resource = sprintf('%s%s', $prefix, $unprefixedResource);
+                return $mutableKey;
+            },
+            null,
+            $key,
+        )($key);
     }
 }

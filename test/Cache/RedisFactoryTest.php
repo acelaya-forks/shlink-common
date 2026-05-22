@@ -25,7 +25,7 @@ use Shlinkio\Shlink\Common\Util\SSL;
 class RedisFactoryTest extends TestCase
 {
     private RedisFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -43,11 +43,15 @@ class RedisFactoryTest extends TestCase
         string $expectedCluster,
         string $expectedReplication,
     ): void {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => [
-                'redis' => $config,
-            ],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => [
+                    'redis' => $config,
+                ],
+            ]);
 
         $client = ($this->factory)($this->container);
 
@@ -58,63 +62,119 @@ class RedisFactoryTest extends TestCase
     public static function provideRedisConfig(): iterable
     {
         yield 'no config' => [null, PredisCluster::class, MasterSlaveReplication::class];
-        yield 'single server as string' => [[
-            'servers' => 'tcp://127.0.0.1:6379',
-        ], PredisCluster::class, MasterSlaveReplication::class];
-        yield 'single server as string with password' => [[
-            'servers' => 'tcp://password:127.0.0.1:6379',
-        ], PredisCluster::class, MasterSlaveReplication::class];
-        yield 'single server as array' => [[
-            'servers' => ['tcp://127.0.0.1:6379'],
-        ], PredisCluster::class, MasterSlaveReplication::class];
-        yield 'cluster of servers' => [[
-            'servers' => ['tcp://1.1.1.1:6379', 'tcp://2.2.2.2:6379'],
-        ], RedisCluster::class, MasterSlaveReplication::class];
-        yield 'cluster of servers with spaces' => [[
-            'servers' => ['tcp://1.1.1.1:6379  ', '  tcp://2.2.2.2:6379 '],
-        ], RedisCluster::class, MasterSlaveReplication::class];
-        yield 'empty cluster of servers' => [[
-            'servers' => [],
-        ], PredisCluster::class, MasterSlaveReplication::class];
-        yield 'cluster of servers as string' => [[
-            'servers' => 'tcp://1.1.1.1:6379,tcp://2.2.2.2:6379',
-        ], RedisCluster::class, MasterSlaveReplication::class];
-        yield 'cluster of servers as string with spaces' => [[
-            'servers' => 'tcp://1.1.1.1:6379, tcp://2.2.2.2:6379 , tcp://3.3.3.3:6379',
-        ], RedisCluster::class, MasterSlaveReplication::class];
-        yield 'single sentinel as string' => [[
-            'servers' => 'tcp://1.1.1.1:26379',
-            'sentinel_service' => 'foo',
-        ], PredisCluster::class, SentinelReplication::class];
-        yield 'single sentinel as array' => [[
-            'servers' => ['tcp://1.1.1.1:26379'],
-            'sentinel_service' => 'foo',
-        ], PredisCluster::class, SentinelReplication::class];
-        yield 'cluster of sentinels' => [[
-            'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
-            'sentinel_service' => 'foo',
-        ], PredisCluster::class, SentinelReplication::class];
-        yield 'cluster of sentinels with password' => [[
-            'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
-            'sentinel_service' => 'foo',
-            'password' => 'foo',
-        ], PredisCluster::class, SentinelReplication::class];
-        yield 'cluster of sentinels with ACL' => [[
-            'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
-            'sentinel_service' => 'foo',
-            'username' => 'user',
-            'password' => 'pass',
-        ], PredisCluster::class, SentinelReplication::class];
+        yield 'single server as string' => [
+            [
+                'servers' => 'tcp://127.0.0.1:6379',
+            ],
+            PredisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'single server as string with password' => [
+            [
+                'servers' => 'tcp://password:127.0.0.1:6379',
+            ],
+            PredisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'single server as array' => [
+            [
+                'servers' => ['tcp://127.0.0.1:6379'],
+            ],
+            PredisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'cluster of servers' => [
+            [
+                'servers' => ['tcp://1.1.1.1:6379', 'tcp://2.2.2.2:6379'],
+            ],
+            RedisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'cluster of servers with spaces' => [
+            [
+                'servers' => ['tcp://1.1.1.1:6379  ', '  tcp://2.2.2.2:6379 '],
+            ],
+            RedisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'empty cluster of servers' => [
+            [
+                'servers' => [],
+            ],
+            PredisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'cluster of servers as string' => [
+            [
+                'servers' => 'tcp://1.1.1.1:6379,tcp://2.2.2.2:6379',
+            ],
+            RedisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'cluster of servers as string with spaces' => [
+            [
+                'servers' => 'tcp://1.1.1.1:6379, tcp://2.2.2.2:6379 , tcp://3.3.3.3:6379',
+            ],
+            RedisCluster::class,
+            MasterSlaveReplication::class,
+        ];
+        yield 'single sentinel as string' => [
+            [
+                'servers' => 'tcp://1.1.1.1:26379',
+                'sentinel_service' => 'foo',
+            ],
+            PredisCluster::class,
+            SentinelReplication::class,
+        ];
+        yield 'single sentinel as array' => [
+            [
+                'servers' => ['tcp://1.1.1.1:26379'],
+                'sentinel_service' => 'foo',
+            ],
+            PredisCluster::class,
+            SentinelReplication::class,
+        ];
+        yield 'cluster of sentinels' => [
+            [
+                'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
+                'sentinel_service' => 'foo',
+            ],
+            PredisCluster::class,
+            SentinelReplication::class,
+        ];
+        yield 'cluster of sentinels with password' => [
+            [
+                'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
+                'sentinel_service' => 'foo',
+                'password' => 'foo',
+            ],
+            PredisCluster::class,
+            SentinelReplication::class,
+        ];
+        yield 'cluster of sentinels with ACL' => [
+            [
+                'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
+                'sentinel_service' => 'foo',
+                'username' => 'user',
+                'password' => 'pass',
+            ],
+            PredisCluster::class,
+            SentinelReplication::class,
+        ];
     }
 
     #[Test]
     public function exceptionIsThrownIfServerUriHasInvalidFormat(): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => [
-                'redis' => ['servers' => ['//']],
-            ],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => [
+                    'redis' => ['servers' => ['//']],
+                ],
+            ]);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -132,9 +192,13 @@ class RedisFactoryTest extends TestCase
         array|null $expectedSslOptions = null,
         string|null $expectedPath = null,
     ): void {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => ['redis' => $redisConfig],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => ['redis' => $redisConfig],
+            ]);
 
         $client = ($this->factory)($this->container);
         $conn = $client->getConnection();
@@ -150,27 +214,51 @@ class RedisFactoryTest extends TestCase
         yield 'no credentials' => [[
             'servers' => ['tcp://1.1.1.1:6379'],
         ]];
-        yield 'username and password' => [[
-            'servers' => ['tcp://foo:bar@1.1.1.1:6379'],
-        ], 'expectedUsername' => 'foo', 'expectedPassword' => 'bar'];
-        yield 'password only' => [[
-            'servers' => ['tcp://:baz@1.1.1.1:6379'],
-        ], 'expectedPassword' => 'baz', 'expectedUsername' => 'default'];
-        yield 'username only' => [[
-            'servers' => ['tcp://foo@1.1.1.1:6379'],
-        ], 'expectedUsername' => 'foo'];
-        yield 'URL-encoded' => [[
-            'servers' => ['tcp://user%3Aname:pass%40word@1.1.1.1:6379'],
-        ], 'expectedUsername' => 'user:name', 'expectedPassword' => 'pass@word'];
-        yield 'tls encryption' => [[
-            'servers' => ['tls://1.1.1.1:6379'],
-        ], 'expectedSslOptions' => SSL::OPTIONS];
-        yield 'rediss encryption' => [[
-            'servers' => ['rediss://1.1.1.1:6379'],
-        ], 'expectedSslOptions' => SSL::OPTIONS];
-        yield 'unix socket' => [[
-            'servers' => ['unix:/path/to/redis.sock'],
-        ], 'expectedPath' => '/path/to/redis.sock'];
+        yield 'username and password' => [
+            [
+                'servers' => ['tcp://foo:bar@1.1.1.1:6379'],
+            ],
+            'expectedUsername' => 'foo',
+            'expectedPassword' => 'bar',
+        ];
+        yield 'password only' => [
+            [
+                'servers' => ['tcp://:baz@1.1.1.1:6379'],
+            ],
+            'expectedPassword' => 'baz',
+            'expectedUsername' => 'default',
+        ];
+        yield 'username only' => [
+            [
+                'servers' => ['tcp://foo@1.1.1.1:6379'],
+            ],
+            'expectedUsername' => 'foo',
+        ];
+        yield 'URL-encoded' => [
+            [
+                'servers' => ['tcp://user%3Aname:pass%40word@1.1.1.1:6379'],
+            ],
+            'expectedUsername' => 'user:name',
+            'expectedPassword' => 'pass@word',
+        ];
+        yield 'tls encryption' => [
+            [
+                'servers' => ['tls://1.1.1.1:6379'],
+            ],
+            'expectedSslOptions' => SSL::OPTIONS,
+        ];
+        yield 'rediss encryption' => [
+            [
+                'servers' => ['rediss://1.1.1.1:6379'],
+            ],
+            'expectedSslOptions' => SSL::OPTIONS,
+        ];
+        yield 'unix socket' => [
+            [
+                'servers' => ['unix:/path/to/redis.sock'],
+            ],
+            'expectedPath' => '/path/to/redis.sock',
+        ];
     }
 
     #[Test, DataProvider('provideServersWithDatabases')]
@@ -178,9 +266,13 @@ class RedisFactoryTest extends TestCase
         array $redisConfig,
         int|null $expectedDatabase,
     ): void {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => ['redis' => $redisConfig],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => ['redis' => $redisConfig],
+            ]);
 
         $client = ($this->factory)($this->container);
         $conn = $client->getConnection();
@@ -190,12 +282,18 @@ class RedisFactoryTest extends TestCase
 
     public static function provideServersWithDatabases(): iterable
     {
-        yield 'no database' => [[
-            'servers' => ['tcp://1.1.1.1:6379'],
-        ], null];
-        yield 'database' => [[
-            'servers' => ['tcp://1.1.1.1:6379?database=5'],
-        ], 5];
+        yield 'no database' => [
+            [
+                'servers' => ['tcp://1.1.1.1:6379'],
+            ],
+            null,
+        ];
+        yield 'database' => [
+            [
+                'servers' => ['tcp://1.1.1.1:6379?database=5'],
+            ],
+            5,
+        ];
     }
 
     #[Test]
@@ -203,11 +301,17 @@ class RedisFactoryTest extends TestCase
     #[TestWith(['1.2'])]
     public function exceptionIsThrownIfDatabaseIsNotAnInt(string $database): void
     {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => ['redis' => [
-                'servers' => ['tcp://1.1.1.1:6379?database=' . $database],
-            ]],
-        ]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => [
+                    'redis' => [
+                        'servers' => ['tcp://1.1.1.1:6379?database=' . $database],
+                    ],
+                ],
+            ]);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The redis database index should be an integer, ' . $database . ' provided');
@@ -222,16 +326,20 @@ class RedisFactoryTest extends TestCase
         string $password,
         string|null $username,
     ): void {
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn([
-            'cache' => [
-                'redis' => [
-                    'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
-                    'sentinel_service' => 'my_server',
-                    'password' => $password,
-                    'username' => $username,
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'cache' => [
+                    'redis' => [
+                        'servers' => ['tcp://1.1.1.1:26379', 'tcp://2.2.2.2:26379'],
+                        'sentinel_service' => 'my_server',
+                        'password' => $password,
+                        'username' => $username,
+                    ],
                 ],
-            ],
-        ]);
+            ]);
 
         $client = ($this->factory)($this->container);
         /** @var SentinelReplication $conn */

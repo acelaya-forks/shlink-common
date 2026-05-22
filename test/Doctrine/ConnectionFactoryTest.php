@@ -16,8 +16,8 @@ use Shlinkio\Shlink\Common\Doctrine\ConnectionFactory;
 class ConnectionFactoryTest extends TestCase
 {
     private ConnectionFactory $factory;
-    private MockObject & EntityManagerInterface $em;
-    private MockObject & ContainerInterface $container;
+    private MockObject&EntityManagerInterface $em;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {

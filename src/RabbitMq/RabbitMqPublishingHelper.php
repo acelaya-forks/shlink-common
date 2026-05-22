@@ -15,16 +15,14 @@ use function Shlinkio\Shlink\Json\json_encode;
 
 readonly class RabbitMqPublishingHelper implements PublishingHelperInterface
 {
-    public function __construct(private AMQPStreamConnection $connection)
-    {
-    }
+    public function __construct(private AMQPStreamConnection $connection) {}
 
     /**
      * @throws Throwable
      */
     public function publishUpdate(Update $update): void
     {
-        if (! $this->connection->isConnected()) {
+        if (!$this->connection->isConnected()) {
             $this->connection->reconnect();
         }
 

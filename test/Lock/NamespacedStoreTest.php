@@ -14,7 +14,7 @@ use Symfony\Component\Lock\SharedLockStoreInterface;
 
 class NamespacedStoreTest extends TestCase
 {
-    private MockObject & SharedLockStoreInterface $wrappedStore;
+    private MockObject&SharedLockStoreInterface $wrappedStore;
 
     public function setUp(): void
     {
@@ -37,9 +37,12 @@ class NamespacedStoreTest extends TestCase
         ];
 
         foreach ($methods as $method => $args) {
-            $this->wrappedStore->expects($this->once())->method($method)->with(
-                $this->callback(fn(Key $arg) => $arg->__toString() === $expectedResource),
-            );
+            $this->wrappedStore
+                ->expects($this->once())
+                ->method($method)
+                ->with(
+                    $this->callback(static fn (Key $arg) => $arg->__toString() === $expectedResource),
+                );
 
             $store->{$method}(...$args);
         }

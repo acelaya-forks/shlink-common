@@ -24,7 +24,7 @@ class HttpClientFactoryTest extends TestCase
     private const BASE_HANDLERS_COUNT = 4;
 
     private HttpClientFactory $factory;
-    private MockObject & ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
@@ -38,11 +38,13 @@ class HttpClientFactoryTest extends TestCase
         int $expectedMiddlewaresAmount,
         InvocationOrder $amountOfServiceGets,
     ): void {
-        $this->container->expects($amountOfServiceGets)->method('get')->willReturnMap([
-            ['some_middleware', static function (): void {
-            }],
-            ['config', ['http_client' => $config]],
-        ]);
+        $this->container
+            ->expects($amountOfServiceGets)
+            ->method('get')
+            ->willReturnMap([
+                ['some_middleware', static function (): void {}],
+                ['config', ['http_client' => $config]],
+            ]);
 
         $client = ($this->factory)($this->container);
         /** @var HandlerStack $handler */
@@ -55,45 +57,73 @@ class HttpClientFactoryTest extends TestCase
 
     public static function provideConfig(): iterable
     {
-        $staticMiddleware = static function (): void {
-        };
+        $staticMiddleware = static function (): void {};
 
         yield [[], 0, new InvokedCount(1)];
         yield [['request_middlewares' => []], 0, new InvokedCount(1)];
         yield [['response_middlewares' => []], 0, new InvokedCount(1)];
-        yield [[
-            'request_middlewares' => [],
-            'response_middlewares' => [],
-        ], 0, new InvokedCount(1)];
-        yield [[
-            'request_middlewares' => ['some_middleware'],
-            'response_middlewares' => [],
-        ], 1, new InvokedCount(2)];
-        yield [[
-            'request_middlewares' => [],
-            'response_middlewares' => ['some_middleware'],
-        ], 1, new InvokedCount(2)];
-        yield [[
-            'request_middlewares' => ['some_middleware'],
-            'response_middlewares' => ['some_middleware'],
-        ], 2, new InvokedCount(3)];
-        yield [[
-            'request_middlewares' => [$staticMiddleware],
-            'response_middlewares' => ['some_middleware'],
-        ], 2, new InvokedCount(2)];
-        yield [[
-            'request_middlewares' => ['some_middleware', $staticMiddleware],
-            'response_middlewares' => [$staticMiddleware, 'some_middleware'],
-        ], 4, new InvokedCount(3)];
+        yield [
+            [
+                'request_middlewares' => [],
+                'response_middlewares' => [],
+            ],
+            0,
+            new InvokedCount(1),
+        ];
+        yield [
+            [
+                'request_middlewares' => ['some_middleware'],
+                'response_middlewares' => [],
+            ],
+            1,
+            new InvokedCount(2),
+        ];
+        yield [
+            [
+                'request_middlewares' => [],
+                'response_middlewares' => ['some_middleware'],
+            ],
+            1,
+            new InvokedCount(2),
+        ];
+        yield [
+            [
+                'request_middlewares' => ['some_middleware'],
+                'response_middlewares' => ['some_middleware'],
+            ],
+            2,
+            new InvokedCount(3),
+        ];
+        yield [
+            [
+                'request_middlewares' => [$staticMiddleware],
+                'response_middlewares' => ['some_middleware'],
+            ],
+            2,
+            new InvokedCount(2),
+        ];
+        yield [
+            [
+                'request_middlewares' => ['some_middleware', $staticMiddleware],
+                'response_middlewares' => [$staticMiddleware, 'some_middleware'],
+            ],
+            4,
+            new InvokedCount(3),
+        ];
     }
 
     #[Test, DataProvider('provideInvalidMiddlewares')]
     public function exceptionIsThrownWhenNonCallableStaticMiddlewaresAreProvided(mixed $middleware): void
     {
-
-        $this->container->expects($this->once())->method('get')->with('config')->willReturn(['http_client' => [
-            'request_middlewares' => [$middleware],
-        ]]);
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'http_client' => [
+                    'request_middlewares' => [$middleware],
+                ],
+            ]);
 
         $this->expectException(InvalidHttpMiddlewareException::class);
 
@@ -103,12 +133,20 @@ class HttpClientFactoryTest extends TestCase
     #[Test, DataProvider('provideInvalidMiddlewares')]
     public function exceptionIsThrownWhenNonCallableServiceMiddlewaresAreProvided(mixed $middleware): void
     {
-        $this->container->expects($this->exactly(2))->method('get')->willReturnMap([
-            ['some_middleware', $middleware],
-            ['config', ['http_client' => [
-                'response_middlewares' => ['some_middleware'],
-            ]]],
-        ]);
+        $this->container
+            ->expects($this->exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                ['some_middleware', $middleware],
+                [
+                    'config',
+                    [
+                        'http_client' => [
+                            'response_middlewares' => ['some_middleware'],
+                        ],
+                    ],
+                ],
+            ]);
 
         $this->expectException(InvalidHttpMiddlewareException::class);
 

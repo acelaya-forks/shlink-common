@@ -23,8 +23,7 @@ final class IpAddress
         private string $secondOctet,
         private string $thirdOctet,
         private string $fourthOctet,
-    ) {
-    }
+    ) {}
 
     /**
      * @return IpAddress

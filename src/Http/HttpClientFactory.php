@@ -43,7 +43,7 @@ class HttpClientFactory
     private function resolveMiddleware(mixed $middleware, ContainerInterface $container): callable
     {
         $middlewareInstance = is_string($middleware) ? $container->get($middleware) : $middleware;
-        if (! is_callable($middlewareInstance)) {
+        if (!is_callable($middlewareInstance)) {
             throw InvalidHttpMiddlewareException::fromMiddleware($middlewareInstance);
         }
 

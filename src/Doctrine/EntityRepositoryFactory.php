@@ -21,7 +21,7 @@ class EntityRepositoryFactory
         $em = $container->get(EntityManager::class);
         $baseRepo = $em->getConfiguration()->getDefaultRepositoryClassName();
 
-        if ($repositoryClass !== $baseRepo && ! is_subclass_of($repositoryClass, $baseRepo)) {
+        if ($repositoryClass !== $baseRepo && !is_subclass_of($repositoryClass, $baseRepo)) {
             throw new InvalidArgumentException(sprintf(
                 '"%s" cannot create an instance of "%s", as it is neither an instance of or extends from "%s"',
                 __CLASS__,
