@@ -46,7 +46,6 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^13.0",
         "psr/simple-cache": "^3.0",
-        "roave/security-advisories": "dev-master",
         "symfony/string": "^8.0",
         "symfony/var-dumper": "^8.0"
     },
