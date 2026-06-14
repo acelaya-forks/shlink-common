@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [9.0.1] - 2026-06-14
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* Require at least predis 3.5.1, which fixes an issue when deleting an array of keys.
+
+
 ## [9.0.0] - 2026-06-10
 ### Added
 * Add support for `laminas/laminas-servicemanager` 4.
